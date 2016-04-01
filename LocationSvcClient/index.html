@@ -1,0 +1,15 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Location Services</title>
+	<meta charset="utf-8" />
+</head>
+<body ng-app="locationApp" ng-controller="locationController">
+    <button ng-click="getLocation()">Get Location</button>
+    <br />
+    Latitude: {{city.Latitude}}<br />
+    Longitude:{{city.Longitude}}<br />
+    <script src="Scripts/lib/angular.min.js"></script>
+    <script src="Scripts/app.js"></script>
+</body>
+</html>
