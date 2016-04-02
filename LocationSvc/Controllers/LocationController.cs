@@ -7,6 +7,7 @@ using System.Web.Http;
 
 namespace LocationSvc.Controllers
 {
+    [Authorize]
     public class LocationController : ApiController
     {
         public Models.Location GetLocation(string cityName)

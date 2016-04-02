@@ -5,16 +5,34 @@ using System.Web;
 
 using Microsoft.Owin;
 using Owin;
-using Microsoft.Owin.Cors;
+using Microsoft.Owin.Security.ActiveDirectory;
+using System.Configuration;
+using System.Web.Http;
 
-[assembly: OwinStartup(typeof(LocationSvc.App_Start.Startup))]
-namespace LocationSvc.App_Start
+[assembly: OwinStartup(typeof(LocationSvc.Startup))]
+namespace LocationSvc
 {
-    public class Startup
+    public partial class Startup
     {
         public void Configuration(IAppBuilder app)
         {
-            app.UseCors(CorsOptions.AllowAll);
+            app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
+            ConfigureAuth(app);         
+        }
+
+        private void ConfigureAuth(IAppBuilder app)
+        {
+            var azureADBearerAuthOptions = new WindowsAzureActiveDirectoryBearerAuthenticationOptions
+            {
+                Tenant = ConfigurationManager.AppSettings["ida:Tenant"]
+            };
+
+            azureADBearerAuthOptions.TokenValidationParameters = new System.IdentityModel.Tokens.TokenValidationParameters()
+            {
+                ValidAudience = ConfigurationManager.AppSettings["ida:Audience"]
+            };
+
+            app.UseWindowsAzureActiveDirectoryBearerAuthentication(azureADBearerAuthOptions);
         }
     }
 }
